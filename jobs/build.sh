@@ -8,30 +8,26 @@ unzip bundle.zip && rm -rf bundle.zip
 
 echo "Creating JSON payload"
 
-IP=$(hostname -i)
-
 cat << EOF > ./docker.json
 {
-	"Hostname": "consul",
-	"Image": "scottyc/consul:latest",
+	"Hostname": "webapp",
+	"Image": "scottyc/webapp:latest",
 	"AttachStdin": false,
 	"AttachStdout": true,
 	"AttachStderr": true,
 	"Tty": false,
 	"OpenStdin": false,
 	"StdinOnce": false,
-	"Cmd": ["-bootstrap-expect", "1",
-		    "--advertise", "$IP", 
-            "-server",
-		    "-dc", "gotham",
-		    "-bind", "0.0.0.0"
-	],
-
-	"HostConfig": {
+	"Labels": {
+               "interlock.hostname": "webapp",
+               "interlock.domain": "ucp-demo.local"
+    },
+    "HostConfig": {
 		"PortBindings": {
-			"8500/tcp": [{
-				"HostPort": "8500"
+			"3000/tcp": [{
+				"HostPort": ""
 			}]
+
 		}
 	}
 }  
@@ -39,7 +35,7 @@ EOF
 
 echo "Creating container"
 
-CONTAINER=$(curl -sk --cacert ca.pem --cert cert.pem --key key.pem -H "Content-Type: application/json" -X POST --data "@docker.json" https://172.17.10.101/v1.22/containers/create?name=consul | jq -r '.Id')
+CONTAINER=$(curl -sk --cacert ca.pem --cert cert.pem --key key.pem -H "Content-Type: application/json" -X POST --data "@docker.json" https://172.17.10.101/v1.22/containers/create?name=webapp | jq -r '.Id')
 
 echo $CONTAINER
 
