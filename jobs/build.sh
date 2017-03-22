@@ -2,7 +2,7 @@
 
 echo "Authenticating with the UCP cluster"
 
-AUTHTOKEN=$(curl -sk -d '{"username":"admin","password":"orca"}' https://172.17.10.101/auth/login | jq -r .auth_token) && \
+AUTHTOKEN=$(curl -sk -d '{"username":"admin","password":"orca4307"}' https://172.17.10.101/auth/login | jq -r .auth_token) && \
 curl -k -H "Authorization: Bearer $AUTHTOKEN" https://172.17.10.101/api/clientbundle -o bundle.zip && \
 unzip bundle.zip && rm -rf bundle.zip
 
