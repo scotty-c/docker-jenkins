@@ -11,7 +11,7 @@ echo "Creating JSON payload"
 cat << EOF > ./docker.json
 {
 	"Hostname": "webapp",
-	"Image": "scottyc/webapp:latest",
+	"Image": "scottyc/initech:latest",
 	"AttachStdin": false,
 	"AttachStdout": true,
 	"AttachStderr": true,
